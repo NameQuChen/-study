@@ -1,0 +1,36 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+      // count 发布订阅实现
+      let state = {
+        count: 1
+      }
+      let listeners  = [] 
+
+      // 订阅
+      function subscribe (listener){
+        listeners.push(listener)
+      }
+
+      function changeCount (count){
+        state.count = count
+        for(let i = 0; i<listeners.length; i++){
+          const listener = listeners[i]
+          listener()
+        }
+      }
+
+      subscribe(() => {
+        console.log(state)
+      })
+      changeCount(2)
+      changeCount(3)
+    </script>
+</body>
+</html>
