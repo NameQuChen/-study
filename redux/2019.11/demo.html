@@ -1,0 +1,47 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+      // 状态
+      let state = {
+        count: 1
+      }
+
+      // 订阅者
+      let listeners = []
+
+      // 订阅
+      function subscribe(listener){
+        listeners.push(listener)
+      }
+
+      // 通知
+      function dispatch(count){
+        state.count = count;
+        // 当 count改变的时候，我们要去通知所有的订阅者
+        for(let i = 0; i < listeners.length;i++){
+          const listener = listeners[i]
+          listener();
+        } 
+      }
+      
+      // 来订阅一下，当count改变的时候，我要输出所有的新值
+      subscribe(() =>{
+        console.log(state.count)
+        console.log(state.count + 'a')
+      })
+      
+      // 我们来修改下 state,当然我们不能直接去改state，要通过dispatch来修改
+      dispatch(2);
+      dispatch(3);
+      dispatch(4);
+
+
+    </script>
+</body>
+</html>

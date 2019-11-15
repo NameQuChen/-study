@@ -1,0 +1,78 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+      const createStore = function (initState) {
+      let state = initState;
+      let listeners = [];
+
+      /*订阅*/
+      function subscribe(listener) {
+        listeners.push(listener);
+      }
+
+      function dispatch(newState) {
+        state = newState;
+        /*通知*/
+        for (let i = 0; i < listeners.length; i++) {
+          const listener = listeners[i];
+          listener();
+        }
+      }
+
+      function getState() {
+        return state;
+      }
+
+      return {
+        subscribe,
+        dispatch,
+        getState
+      }
+    }
+
+
+    let initState = {
+      counter: {
+        count: 0
+      },
+      info: {
+        name: '',
+        description: ''
+      }
+    }
+
+  let store = createStore(initState);
+
+  store.subscribe(() => {
+    let state = store.getState();
+    console.log(`${state.info.name}：${state.info.description}`);
+  });
+  store.subscribe(() => {
+    let state = store.getState();
+    console.log(state.counter.count);
+  });
+
+  store.dispatch({
+    ...store.getState(),
+    info: {
+      name: '名字',
+      description: '描述'
+    }
+  });
+
+  store.dispatch({
+    ...store.getState(),
+    counter: {
+      count: 1
+    }
+  });
+
+    </script>
+</body>
+</html>
